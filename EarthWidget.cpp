@@ -30,7 +30,7 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
     auto cameraLight = new QPointLight();
     auto cameraController = new QOrbitCameraController(scene);
 
-    camera->setPosition(QVector3D(100,0,0)); //600.f, 600.0f, 600.0f
+    camera->setPosition(QVector3D(0, 0,500)); //600.f, 600.0f, 600.0f
     camera->setViewCenter(QVector3D(0.0f,0.0f,0.0f));
     camera->setFarPlane(100000);
 
