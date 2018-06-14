@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>earth-texture.jpg</file>
+        <file>moon-texture.jpg</file>
+        <file>galaxy-texture.jpg</file>
+        <file>Icy-texture.png</file>
+        <file>volcanic-texture.png</file>
+        <file>DeepTime.ico</file>
+    </qresource>
+</RCC>
