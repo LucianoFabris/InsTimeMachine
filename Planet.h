@@ -35,6 +35,7 @@ public:
     void setupMaterial(const QString &texture)
     {
         mTexture->setSource(QUrl(texture));
+        mMaterial->diffuse()->textureImages().clear();
         mMaterial->diffuse()->addTextureImage(mTexture);
         mMaterial->setShininess(50);
         mMaterial->setAmbient(QColor(Qt::white));

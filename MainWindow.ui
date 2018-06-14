@@ -28,7 +28,7 @@
        </widget>
       </item>
       <item>
-       <widget class="EarthWidget" name="widget" native="true"/>
+       <widget class="EarthWidget" name="earthWidget" native="true"/>
       </item>
      </layout>
     </item>

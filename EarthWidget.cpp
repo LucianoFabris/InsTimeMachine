@@ -13,8 +13,6 @@ using namespace Qt3DCore;
 using namespace Qt3DRender;
 using namespace Qt3DExtras;
 
-#include "Planet.h"
-
 EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
 {
     Qt3DWindow *window = new Qt3DWindow();
@@ -68,7 +66,18 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
     const double moonRadius = 25;
     const double moonDistanceToEarth = 100;
 
-    Planet *earth = new Planet(earthRadius, QStringLiteral("qrc:/volcanic-texture.png"), 0, scene); //earthRadius + sunRadius + 0.2579380583*neptuneDistance , sun
-    Planet *moon = new Planet(moonRadius, QStringLiteral("qrc:/moon-texture.jpg"), moonDistanceToEarth, earth);  // 2*moonRadius + earthRadius
+    earth = new Planet(earthRadius, QStringLiteral("qrc:/volcanic-texture.png"), 0, scene);
+    moon = new Planet(moonRadius, QStringLiteral("qrc:/moon-texture.jpg"), moonDistanceToEarth, earth);
+}
 
+void EarthWidget::setEarthPeriod(const QString &period) {
+    if(period == "Hadeano") {
+        earth->setupMaterial(QStringLiteral("qrc:/volcanic-texture.png"));
+    } else if(period == "Arqueano") {
+        earth->setupMaterial(QStringLiteral("qrc:/arquean-earth.jpg"));
+    } else if(period == "Snowball Earth") {
+        earth->setupMaterial(QStringLiteral("qrc:/Icy-texture.png"));
+    } else {
+        earth->setupMaterial(QStringLiteral("qrc:/earth-texture.jpg"));
+    }
 }

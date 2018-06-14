@@ -29,13 +29,15 @@ SOURCES += \
         MainWindow.cpp \
     TimeLineBar.cpp \
     EarthWidget.cpp \
-    Planet.cpp
+    Planet.cpp \
+    GeologicalPeriod.cpp
 
 HEADERS += \
         MainWindow.h \
     TimeLineBar.h \
     EarthWidget.h \
-    Planet.h
+    Planet.h \
+    GeologicalPeriod.h
 
 FORMS += \
         MainWindow.ui
