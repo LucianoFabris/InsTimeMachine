@@ -12,11 +12,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->timeLineBar->setGeologicalPeriodsModel(mGeologicalPeriodsModel);
-    ui->timeLineBar->setHistoricalEventsModel(mHistoryEventsModel);
-
     connect(ui->timeLineBar, &TimeLineBar::eventReached, ui->timeDescriptionWidget, &EventDescriptionView::setCurrentEvent);
     connect(ui->timeLineBar, &TimeLineBar::periodChanged, ui->earthWidget, &EarthWidget::setEarthPeriod);
+
+    ui->timeLineBar->setGeologicalPeriodsModel(mGeologicalPeriodsModel);
+    ui->timeLineBar->setHistoricalEventsModel(mHistoryEventsModel);
 
     ui->earthWidget->setFocusPolicy(Qt::NoFocus);
     ui->timeDescriptionWidget->setFocusPolicy(Qt::NoFocus);

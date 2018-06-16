@@ -8,8 +8,8 @@
 TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
     mMargin(16),
-    mCurrentTime(70),
-    mHistoryLength(100)
+    mCurrentTime(0),
+    mHistoryLength(400)
 {
 
 }

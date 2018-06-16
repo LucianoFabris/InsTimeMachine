@@ -13,7 +13,7 @@ using namespace Qt3DCore;
 using namespace Qt3DRender;
 using namespace Qt3DExtras;
 
-const double frameRate = 60;
+const double frameRate = 30;
 
 class Planet : public QEntity {
 
@@ -23,6 +23,7 @@ public:
         mTransformTimer.setInterval((1000/(frameRate*mDistanceFromCenter)) * mDistanceFromCenter);
         mTransformTimer.setSingleShot(false);
         mTransformTimer.start();
+        //move this operation to another thread
         QObject::connect(&mTransformTimer, &QTimer::timeout, [this] {
             mMatrix.setToIdentity();
             mMatrix.rotate(mOrbitRotation, QVector3D(0, 1, 0));
