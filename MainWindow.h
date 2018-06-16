@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "GeologicalPeriodsModel.h"
+#include "HistoryEventsModel.h"
 
 namespace Ui {
 class MainWindow;
@@ -17,6 +19,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    GeologicalPeriodsModel mGeologicalPeriodsModel;
+    HistoryEventsModel mHistoryEventsModel;
 
     // QWidget interface
 protected:

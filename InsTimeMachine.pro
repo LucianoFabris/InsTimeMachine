@@ -30,14 +30,20 @@ SOURCES += \
     TimeLineBar.cpp \
     EarthWidget.cpp \
     Planet.cpp \
-    GeologicalPeriod.cpp
+    GeologicalPeriod.cpp \
+    GeologicalPeriodsModel.cpp \
+    HistoryEventsModel.cpp \
+    HistoricalEvent.cpp
 
 HEADERS += \
         MainWindow.h \
     TimeLineBar.h \
     EarthWidget.h \
     Planet.h \
-    GeologicalPeriod.h
+    GeologicalPeriod.h \
+    GeologicalPeriodsModel.h \
+    HistoryEventsModel.h \
+    HistoricalEvent.h
 
 FORMS += \
         MainWindow.ui

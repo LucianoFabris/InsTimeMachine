@@ -70,14 +70,10 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
     moon = new Planet(moonRadius, QStringLiteral("qrc:/moon-texture.jpg"), moonDistanceToEarth, earth);
 }
 
-void EarthWidget::setEarthPeriod(const QString &period) {
-    if(period == "Hadeano") {
-        earth->setupMaterial(QStringLiteral("qrc:/volcanic-texture.png"));
-    } else if(period == "Arqueano") {
-        earth->setupMaterial(QStringLiteral("qrc:/arquean-earth.jpg"));
-    } else if(period == "Snowball Earth") {
-        earth->setupMaterial(QStringLiteral("qrc:/Icy-texture.png"));
-    } else {
-        earth->setupMaterial(QStringLiteral("qrc:/earth-texture.jpg"));
-    }
+void EarthWidget::setModel(GeologicalPeriodsModel &model) {
+    this->model = &model;
+}
+
+void EarthWidget::setEarthPeriod(const QModelIndex &index) {
+    earth->setupMaterialTexture(model->data(index, GeologicalPeriodsModel::TextureRole).toString());
 }

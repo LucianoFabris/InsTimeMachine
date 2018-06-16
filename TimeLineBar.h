@@ -3,32 +3,37 @@
 
 #include <QFrame>
 #include <QObject>
+#include "HistoricalEvent.h"
 
 #include "GeologicalPeriod.h"
+#include "GeologicalPeriodsModel.h"
+#include "HistoryEventsModel.h"
 
 class TimeLineBar : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(double time MEMBER mCurrentTime READ currentTime WRITE setCurrentTime NOTIFY currentTimeChanged)
-    Q_PROPERTY(QString currentGeologicalPeriod MEMBER mCurrentGeologicalPeriod READ currentPeriod NOTIFY currentPeriodChanged)
+    Q_PROPERTY(QModelIndex currentGeologicalPeriod READ currentPeriodIndex NOTIFY currentPeriodChanged)
 
 public:
     TimeLineBar(QWidget *parent = Q_NULLPTR);
 
     double currentTime() const { return mCurrentTime; }
-    QString currentPeriod() const { return mCurrentGeologicalPeriod; }
+    QModelIndex currentPeriodIndex() const { return geologicalPeriodsModel->index(mCurrentPeriodPos); }
 
-    void appendGeologicalPeriod(GeologicalPeriod periodName);
+    void setGeologicalPeriodsModel(GeologicalPeriodsModel &geologicalPeriodsModel);
+    void setHistoricalEventsModel(HistoryEventsModel &geologicalPeriodsModel);
 
 public slots:
-    void setTimeDistance(const double timeDistance);
+    void setHistoryLength(const double timeDistance);
     void setCurrentTime(const double currentTime);
     void moveIndicatorToRight();
     void moveIndicatorToLeft();
 
 signals:
-    void currentTimeChanged();
-    void currentPeriodChanged(QString period);
+    void currentTimeChanged(const double currentTime);
+    void currentPeriodChanged(const QModelIndex &index);
+    void eventReached(const QModelIndex &index);
 
     // QWidget interface
 protected:
@@ -44,14 +49,18 @@ private:
     int barWidth() const;
     int barHeight() const;
 
-    void checkGeologicalPeriod();
+    void updateHistoryLengthAndCurrentTime();
 
 private:
     const int margin;
     double mCurrentTime;
-    double mTimeDistance;
-    QList<GeologicalPeriod> mTimePeriods;
-    QString mCurrentGeologicalPeriod;
+    double mHistoryLength;
+    QList<GeologicalPeriod> mGeologicalPeriods;
+    int mCurrentPeriodPos;
+    QList<HistoricalEvent> mHistoricalEvents;
+    GeologicalPeriodsModel *geologicalPeriodsModel;
+    HistoryEventsModel *historyEventsModel;
+    double mHistoryBeginTime;
 };
 
 #endif // TIMELINEBAR_H

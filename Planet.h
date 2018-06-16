@@ -32,7 +32,7 @@ public:
         });
     }
 
-    void setupMaterial(const QString &texture)
+    void setupMaterialTexture(const QString &texture)
     {
         mTexture->setSource(QUrl(texture));
         mMaterial->diffuse()->textureImages().clear();
@@ -53,7 +53,7 @@ public:
         mDistanceFromCenter(distanceFromCenter)
     {
         mMesh->setRadius(radius);
-        setupMaterial(texture);
+        setupMaterialTexture(texture);
         setupRotation();
 
         addComponent(mTransform);

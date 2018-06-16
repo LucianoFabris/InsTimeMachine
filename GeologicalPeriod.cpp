@@ -1,10 +1,15 @@
 #include "GeologicalPeriod.h"
 
-GeologicalPeriod::GeologicalPeriod(QString name, QColor color, double begining, double end) :
-    mPeriodName(name),
-    mPeriodColor(color),
-    mBeginingTime(begining),
-    mEndTime(end)
+GeologicalPeriod::GeologicalPeriod(const QString name,
+                                   const QColor color,
+                                   const double begining,
+                                   const double end,
+                                   const QString texture) :
+    name(name),
+    color(color),
+    beginTime(begining),
+    endTime(end),
+    texture(texture)
 {
 
 }

@@ -9,69 +9,84 @@ TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
     margin(16),
     mCurrentTime(70),
-    mTimeDistance(100)
+    mHistoryLength(100)
 {
 
 }
 
+void TimeLineBar::setGeologicalPeriodsModel(GeologicalPeriodsModel &model) {
+    geologicalPeriodsModel = &model;
+    mGeologicalPeriods = model.getAllPeriods();
+    mCurrentPeriodPos = 0;
+    updateHistoryLengthAndCurrentTime();
+    update();
+}
+
+void TimeLineBar::updateHistoryLengthAndCurrentTime()
+{
+    mHistoryBeginTime = mGeologicalPeriods[0].beginTime;
+    double historyEnd = mGeologicalPeriods[0].endTime;
+
+    for(int i = 1;i < mGeologicalPeriods.length(); i++) {
+        mHistoryBeginTime = std::min(mHistoryBeginTime, mGeologicalPeriods[i].beginTime);
+        historyEnd = std::max(historyEnd, mGeologicalPeriods[i].endTime);
+    }
+
+    mCurrentTime = mHistoryBeginTime;
+    mHistoryLength = historyEnd - mHistoryBeginTime;
+}
+
+void TimeLineBar::setHistoricalEventsModel(HistoryEventsModel &model) {
+    historyEventsModel = &model;
+}
 
 void TimeLineBar::moveIndicatorToLeft() {
-    if(mCurrentTime > 0) {
+    if(mCurrentTime > mHistoryBeginTime) {
         setCurrentTime(mCurrentTime - 1);
-        checkGeologicalPeriod();
+        if(mGeologicalPeriods[mCurrentPeriodPos].after(mCurrentTime)) {
+            mCurrentPeriodPos--;
+            emit currentPeriodChanged(geologicalPeriodsModel->index(mCurrentPeriodPos));
+        }
+        emit currentTimeChanged(mCurrentTime);
     }
 }
 
 void TimeLineBar::moveIndicatorToRight() {
-    if(mCurrentTime < mTimeDistance) {
+    if(mCurrentTime < mHistoryLength) {
         setCurrentTime(mCurrentTime + 1);
-        checkGeologicalPeriod();
+        if(mGeologicalPeriods[mCurrentPeriodPos].before(mCurrentTime)) {
+            mCurrentPeriodPos++;
+            emit currentPeriodChanged(geologicalPeriodsModel->index(mCurrentPeriodPos));
+        }
+        emit currentTimeChanged(mCurrentTime);
     }
 }
 
-void TimeLineBar::setTimeDistance(const double timeDistance) {
-    mTimeDistance = timeDistance;
+void TimeLineBar::setHistoryLength(const double timeDistance) {
+    mHistoryLength = timeDistance;
     update();
 }
 
 void TimeLineBar::setCurrentTime(const double currentTime) {
     mCurrentTime = currentTime;
-    emit currentTimeChanged();
-    update();
-}
-
-void TimeLineBar::appendGeologicalPeriod(GeologicalPeriod period) {
-    mTimePeriods.append(period);
-    checkGeologicalPeriod();
+    emit currentTimeChanged(mCurrentTime);
     update();
 }
 
 void TimeLineBar::paintEvent(QPaintEvent *event)
 {
     QFrame::paintEvent(event);
-    // Do bar Paiting
     QPainter p(this);
+    p.translate(margin, margin);
     p.save();
     drawTimeLine(p);
     p.restore();
     drawTimePositionIndicator(p);
 }
 
-void TimeLineBar::checkGeologicalPeriod() {
-    // could make a binary search
-    for(const GeologicalPeriod &period : mTimePeriods) {
-        if(period.contains(mCurrentTime) && mCurrentGeologicalPeriod != period.mPeriodName) {
-            mCurrentGeologicalPeriod = period.mPeriodName;
-            emit currentPeriodChanged(mCurrentGeologicalPeriod);
-            return;
-        }
-    }
-}
-
 void TimeLineBar::drawTimeLine(QPainter &p) const {
-    p.translate(margin, margin);
-    if(mTimePeriods.size() != 0) {
-        for(const GeologicalPeriod &period : mTimePeriods) {
+    if(mGeologicalPeriods.size() != 0) {
+        for(const GeologicalPeriod &period : mGeologicalPeriods) {
             drawPeriod(period, p);
         }
     } else {
@@ -81,12 +96,12 @@ void TimeLineBar::drawTimeLine(QPainter &p) const {
 }
 
 void TimeLineBar::drawPeriod(const GeologicalPeriod &period, QPainter &p) const {
-    const double timeDuration = period.mEndTime - period.mBeginingTime;
-    const double timePercentage = timeDuration / mTimeDistance;
-    const double xPercentage = period.mBeginingTime / mTimeDistance;
-    QRect periodRect(xPercentage * barWidth(), 0, timePercentage * barWidth(), barHeight());
-    drawPeriodRectangle(periodRect, period.mPeriodColor, p);
-    drawPeriodName(p, periodRect, period.mPeriodName);
+    const double periodLength = period.endTime - period.beginTime;
+    const double periodLengthPercentage = periodLength / mHistoryLength;
+    const double xPosPercentage = period.beginTime / mHistoryLength;
+    QRect periodRect(xPosPercentage * barWidth(), 0, periodLengthPercentage * barWidth(), barHeight());
+    drawPeriodRectangle(periodRect, period.color, p);
+    drawPeriodName(p, periodRect, period.name);
 }
 
 void TimeLineBar::drawPeriodRectangle(const QRect &periodRect, const QColor &color, QPainter &p) const {
@@ -115,9 +130,9 @@ int TimeLineBar::barHeight() const {
 }
 
 void TimeLineBar::drawTimePositionIndicator(QPainter &p) const {
-    const double timePercentage = mCurrentTime / mTimeDistance;
+    const double xPostPercentage = mCurrentTime / mHistoryLength;
     p.setBrush(QBrush(QColor(Qt::white)));
     const int indicatorWidth = 16;
     const int indicatorHeight = barHeight() + 16;
-    p.drawRect(margin + timePercentage * barWidth(), margin - 8, indicatorWidth, indicatorHeight);
+    p.drawRect(xPostPercentage * barWidth() -indicatorWidth/2, -8, indicatorWidth, indicatorHeight);
 }
