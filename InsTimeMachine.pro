@@ -33,7 +33,8 @@ SOURCES += \
     GeologicalPeriod.cpp \
     GeologicalPeriodsModel.cpp \
     HistoryEventsModel.cpp \
-    HistoricalEvent.cpp
+    HistoricalEvent.cpp \
+    EventDescriptionView.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     GeologicalPeriod.h \
     GeologicalPeriodsModel.h \
     HistoryEventsModel.h \
-    HistoricalEvent.h
+    HistoricalEvent.h \
+    EventDescriptionView.h
 
 FORMS += \
         MainWindow.ui

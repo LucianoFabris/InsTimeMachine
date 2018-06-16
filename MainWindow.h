@@ -20,7 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     GeologicalPeriodsModel mGeologicalPeriodsModel;
-    HistoryEventsModel mHistoryEventsModel;
+    HistoricalEventsModel mHistoryEventsModel;
 
     // QWidget interface
 protected:

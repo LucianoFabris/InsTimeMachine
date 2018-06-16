@@ -10,7 +10,6 @@ class EarthWidget : public QWidget
     Q_OBJECT
 public:
     explicit EarthWidget(QWidget *parent = nullptr);
-    void setModel(GeologicalPeriodsModel &model);
 
 public slots:
     void setEarthPeriod(const QModelIndex &index);
@@ -18,7 +17,7 @@ public slots:
 private:
     Planet *earth;
     Planet *moon;
-    GeologicalPeriodsModel *model;
+
 };
 
 #endif // EARTHWIDGET_H

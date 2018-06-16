@@ -21,7 +21,7 @@
        <number>12</number>
       </property>
       <item>
-       <widget class="QTextBrowser" name="timeDescriptionWidget">
+       <widget class="EventDescriptionView" name="timeDescriptionWidget">
         <property name="textInteractionFlags">
          <set>Qt::NoTextInteraction</set>
         </property>
@@ -58,6 +58,11 @@
    <extends>QWidget</extends>
    <header>EarthWidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>EventDescriptionView</class>
+   <extends>QTextBrowser</extends>
+   <header>EventDescriptionView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

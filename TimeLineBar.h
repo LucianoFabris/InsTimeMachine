@@ -12,27 +12,28 @@
 class TimeLineBar : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(double time MEMBER mCurrentTime READ currentTime WRITE setCurrentTime NOTIFY currentTimeChanged)
-    Q_PROPERTY(QModelIndex currentGeologicalPeriod READ currentPeriodIndex NOTIFY currentPeriodChanged)
+    Q_PROPERTY(double time MEMBER mCurrentTime READ currentTime WRITE setCurrentTime NOTIFY timeChanged)
+    Q_PROPERTY(QModelIndex currentGeologicalPeriod READ currentPeriodIndex NOTIFY periodChanged)
 
 public:
     TimeLineBar(QWidget *parent = Q_NULLPTR);
 
     double currentTime() const { return mCurrentTime; }
-    QModelIndex currentPeriodIndex() const { return geologicalPeriodsModel->index(mCurrentPeriodPos); }
+    QModelIndex currentPeriodIndex() const { return mGeologicalPeriodsModel->index(mCurrentPeriodPos); }
 
-    void setGeologicalPeriodsModel(GeologicalPeriodsModel &geologicalPeriodsModel);
-    void setHistoricalEventsModel(HistoryEventsModel &geologicalPeriodsModel);
+    void setGeologicalPeriodsModel(GeologicalPeriodsModel &mGeologicalPeriodsModel);
+    void setHistoricalEventsModel(HistoricalEventsModel &mGeologicalPeriodsModel);
 
 public slots:
     void setHistoryLength(const double timeDistance);
     void setCurrentTime(const double currentTime);
     void moveIndicatorToRight();
     void moveIndicatorToLeft();
+    void checkForEvents();
 
 signals:
-    void currentTimeChanged(const double currentTime);
-    void currentPeriodChanged(const QModelIndex &index);
+    void timeChanged(const double currentTime);
+    void periodChanged(const QModelIndex &index);
     void eventReached(const QModelIndex &index);
 
     // QWidget interface
@@ -52,14 +53,14 @@ private:
     void updateHistoryLengthAndCurrentTime();
 
 private:
-    const int margin;
+    const int mMargin;
     double mCurrentTime;
     double mHistoryLength;
     QList<GeologicalPeriod> mGeologicalPeriods;
     int mCurrentPeriodPos;
     QList<HistoricalEvent> mHistoricalEvents;
-    GeologicalPeriodsModel *geologicalPeriodsModel;
-    HistoryEventsModel *historyEventsModel;
+    GeologicalPeriodsModel *mGeologicalPeriodsModel;
+    HistoricalEventsModel *mHistoryEventsModel;
     double mHistoryBeginTime;
 };
 

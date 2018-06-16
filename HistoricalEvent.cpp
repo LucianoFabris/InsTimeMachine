@@ -1,6 +1,8 @@
 #include "HistoricalEvent.h"
 
-HistoricalEvent::HistoricalEvent()
+HistoricalEvent::HistoricalEvent(const QString &text, const double ocurrenceTime) :
+    text(text),
+    ocurrenceTime(ocurrenceTime)
 {
 
 }

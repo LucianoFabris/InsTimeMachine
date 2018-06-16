@@ -7,7 +7,7 @@
 
 TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
-    margin(16),
+    mMargin(16),
     mCurrentTime(70),
     mHistoryLength(100)
 {
@@ -15,7 +15,7 @@ TimeLineBar::TimeLineBar(QWidget *parent) :
 }
 
 void TimeLineBar::setGeologicalPeriodsModel(GeologicalPeriodsModel &model) {
-    geologicalPeriodsModel = &model;
+    mGeologicalPeriodsModel = &model;
     mGeologicalPeriods = model.getAllPeriods();
     mCurrentPeriodPos = 0;
     updateHistoryLengthAndCurrentTime();
@@ -36,8 +36,10 @@ void TimeLineBar::updateHistoryLengthAndCurrentTime()
     mHistoryLength = historyEnd - mHistoryBeginTime;
 }
 
-void TimeLineBar::setHistoricalEventsModel(HistoryEventsModel &model) {
-    historyEventsModel = &model;
+void TimeLineBar::setHistoricalEventsModel(HistoricalEventsModel &model) {
+    mHistoryEventsModel = &model;
+    mHistoricalEvents = mHistoryEventsModel->getAllEvents();
+    checkForEvents();
 }
 
 void TimeLineBar::moveIndicatorToLeft() {
@@ -45,9 +47,10 @@ void TimeLineBar::moveIndicatorToLeft() {
         setCurrentTime(mCurrentTime - 1);
         if(mGeologicalPeriods[mCurrentPeriodPos].after(mCurrentTime)) {
             mCurrentPeriodPos--;
-            emit currentPeriodChanged(geologicalPeriodsModel->index(mCurrentPeriodPos));
+            emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
         }
-        emit currentTimeChanged(mCurrentTime);
+        checkForEvents();
+        emit timeChanged(mCurrentTime);
     }
 }
 
@@ -56,9 +59,10 @@ void TimeLineBar::moveIndicatorToRight() {
         setCurrentTime(mCurrentTime + 1);
         if(mGeologicalPeriods[mCurrentPeriodPos].before(mCurrentTime)) {
             mCurrentPeriodPos++;
-            emit currentPeriodChanged(geologicalPeriodsModel->index(mCurrentPeriodPos));
+            emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
         }
-        emit currentTimeChanged(mCurrentTime);
+        checkForEvents();
+        emit timeChanged(mCurrentTime);
     }
 }
 
@@ -67,9 +71,24 @@ void TimeLineBar::setHistoryLength(const double timeDistance) {
     update();
 }
 
+void TimeLineBar::checkForEvents() {
+    int begin = 0, end = mHistoricalEvents.size() - 1, middle;
+    while(begin <= end) {
+        middle = (begin + end)/2;
+        if(mHistoricalEvents[middle].ocurrenceTime == mCurrentTime) {
+            emit eventReached(mHistoryEventsModel->index(middle));
+            return;
+        } else if(mCurrentTime < mHistoricalEvents[middle].ocurrenceTime) {
+            end = middle - 1;
+        } else {
+            begin = middle + 1;
+        }
+    }
+}
+
 void TimeLineBar::setCurrentTime(const double currentTime) {
     mCurrentTime = currentTime;
-    emit currentTimeChanged(mCurrentTime);
+    emit timeChanged(mCurrentTime);
     update();
 }
 
@@ -77,7 +96,7 @@ void TimeLineBar::paintEvent(QPaintEvent *event)
 {
     QFrame::paintEvent(event);
     QPainter p(this);
-    p.translate(margin, margin);
+    p.translate(mMargin, mMargin);
     p.save();
     drawTimeLine(p);
     p.restore();
@@ -122,11 +141,11 @@ void TimeLineBar::drawPeriodName(QPainter &p, const QRect &periodRect, const QSt
 
 
 int TimeLineBar::barWidth() const {
-    return width() - 2*margin;
+    return width() - 2*mMargin;
 }
 
 int TimeLineBar::barHeight() const {
-    return height() - 2*margin;
+    return height() - 2*mMargin;
 }
 
 void TimeLineBar::drawTimePositionIndicator(QPainter &p) const {

@@ -26,15 +26,11 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
 
     auto camera = window->camera();
     auto cameraLight = new QPointLight();
-    auto cameraController = new QOrbitCameraController(scene);
+//    auto cameraController = new QOrbitCameraController(scene);
 
-    camera->setPosition(QVector3D(0, 0,500)); //600.f, 600.0f, 600.0f
+    camera->setPosition(QVector3D(0, 0,500));
     camera->setViewCenter(QVector3D(0.0f,0.0f,0.0f));
     camera->setFarPlane(100000);
-
-    cameraController->setCamera(camera);
-    cameraController->setLinearSpeed(1000.0f);
-    cameraController->setLookSpeed(1000.0f);
 
     cameraLight->setIntensity(3);
     cameraLight->setColor(QColor(Qt::white));
@@ -63,17 +59,13 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
     backgroundTranslation->setMatrix(backRotation);
 
     const double earthRadius = 50;
-    const double moonRadius = 25;
+    const double moonRadius = 15;
     const double moonDistanceToEarth = 100;
 
     earth = new Planet(earthRadius, QStringLiteral("qrc:/volcanic-texture.png"), 0, scene);
     moon = new Planet(moonRadius, QStringLiteral("qrc:/moon-texture.jpg"), moonDistanceToEarth, earth);
 }
 
-void EarthWidget::setModel(GeologicalPeriodsModel &model) {
-    this->model = &model;
-}
-
 void EarthWidget::setEarthPeriod(const QModelIndex &index) {
-    earth->setupMaterialTexture(model->data(index, GeologicalPeriodsModel::TextureRole).toString());
+    earth->setupMaterialTexture(index.data(GeologicalPeriodsModel::TextureRole).toString());
 }

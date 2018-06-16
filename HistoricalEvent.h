@@ -6,9 +6,9 @@
 class HistoricalEvent
 {
 public:
-    HistoricalEvent();
+    HistoricalEvent(const QString &text, const double ocurrenceTime);
 
-    QString body;
+    QString text;
     double ocurrenceTime;
 };
 
