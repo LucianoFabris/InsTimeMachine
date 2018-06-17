@@ -3,6 +3,7 @@
 
 #include <QFrame>
 #include <QObject>
+#include <QPropertyAnimation>
 #include "HistoricalEvent.h"
 
 #include "GeologicalPeriod.h"
@@ -12,15 +13,19 @@
 class TimeLineBar : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(double time MEMBER mCurrentTime READ currentTime WRITE setCurrentTime NOTIFY timeChanged)
-    Q_PROPERTY(QModelIndex currentGeologicalPeriod READ currentPeriodIndex NOTIFY periodChanged)
+    Q_PROPERTY(double time MEMBER mCurrentTime READ currentTime WRITE setCurrentTime)
+    Q_PROPERTY(QModelIndex currentGeologicalPeriod NOTIFY periodChanged)
+
+    enum MovingDirection {
+        Stoped,
+        Right,
+        Left
+    };
 
 public:
     TimeLineBar(QWidget *parent = Q_NULLPTR);
 
     double currentTime() const { return mCurrentTime; }
-    QModelIndex currentPeriodIndex() const { return mGeologicalPeriodsModel->index(mCurrentPeriodPos); }
-
     void setGeologicalPeriodsModel(GeologicalPeriodsModel &mGeologicalPeriodsModel);
     void setHistoricalEventsModel(HistoricalEventsModel &mGeologicalPeriodsModel);
 
@@ -29,10 +34,9 @@ public slots:
     void setCurrentTime(const double currentTime);
     void moveIndicatorToRight();
     void moveIndicatorToLeft();
-    void checkForEvents();
+    void stopIndicator();
 
 signals:
-    void timeChanged(const double currentTime);
     void periodChanged(const QModelIndex &index);
     void eventReached(const QModelIndex &index);
 
@@ -51,6 +55,11 @@ private:
     int barHeight() const;
 
     void updateHistoryLengthAndCurrentTime();
+    void updateIndicatorAnimation(const double endValue);
+    void startAnimationTo(const double endValue);
+    void checkGeologicalPeriod(const double currentTime);
+    void checkForEvents(const double currentTime);
+    bool ocurredInIntervalOfTolerance(const double ocurrenceTime, const double currentTime);
 
 private:
     const int mMargin;
@@ -62,6 +71,9 @@ private:
     GeologicalPeriodsModel *mGeologicalPeriodsModel;
     HistoricalEventsModel *mHistoryEventsModel;
     double mHistoryBeginTime;
+    QPropertyAnimation mIndicatorAnimation;
+    MovingDirection mMovingDirection;
+    int mLastEventReached;
 };
 
 #endif // TIMELINEBAR_H

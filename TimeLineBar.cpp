@@ -5,13 +5,22 @@
 #include <QFont>
 #include <QDebug>
 
+const int TIME_TO_PERCURR_BAR = 6000;
+
 TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
     mMargin(16),
     mCurrentTime(0),
-    mHistoryLength(400)
+    mHistoryLength(400),
+    mIndicatorAnimation(this, "time"),
+    mMovingDirection(Stoped),
+    mLastEventReached(0)
 {
-
+    mIndicatorAnimation.setDuration(10000);
+    mIndicatorAnimation.setEasingCurve(QEasingCurve::InOutQuad);
+    connect(&mIndicatorAnimation, &QPropertyAnimation::finished, [this]  {
+       mMovingDirection = Stoped;
+    });
 }
 
 void TimeLineBar::setGeologicalPeriodsModel(GeologicalPeriodsModel &model) {
@@ -24,45 +33,45 @@ void TimeLineBar::setGeologicalPeriodsModel(GeologicalPeriodsModel &model) {
 
 void TimeLineBar::updateHistoryLengthAndCurrentTime()
 {
-    mHistoryBeginTime = mGeologicalPeriods[0].beginTime;
-    double historyEnd = mGeologicalPeriods[0].endTime;
-
-    for(int i = 1;i < mGeologicalPeriods.length(); i++) {
-        mHistoryBeginTime = std::min(mHistoryBeginTime, mGeologicalPeriods[i].beginTime);
-        historyEnd = std::max(historyEnd, mGeologicalPeriods[i].endTime);
-    }
-
+    mHistoryBeginTime = mGeologicalPeriods.first().beginTime;
     mCurrentTime = mHistoryBeginTime;
-    mHistoryLength = historyEnd - mHistoryBeginTime;
+    mHistoryLength = mGeologicalPeriods.last().endTime - mHistoryBeginTime;
 }
 
 void TimeLineBar::setHistoricalEventsModel(HistoricalEventsModel &model) {
     mHistoryEventsModel = &model;
     mHistoricalEvents = mHistoryEventsModel->getAllEvents();
-    checkForEvents();
+    checkForEvents(mCurrentTime);
+}
+
+void TimeLineBar::stopIndicator() {
+    mIndicatorAnimation.stop();
+    mMovingDirection = Stoped;
+}
+
+void TimeLineBar::startAnimationTo(const double endValue)
+{
+    updateIndicatorAnimation(endValue);
+    mIndicatorAnimation.start();
+}
+
+void TimeLineBar::updateIndicatorAnimation(const double endValue) {
+    mIndicatorAnimation.setDuration(TIME_TO_PERCURR_BAR*((std::abs(mCurrentTime-endValue))/(mHistoryLength)));
+    mIndicatorAnimation.setStartValue(mCurrentTime);
+    mIndicatorAnimation.setEndValue(endValue);
 }
 
 void TimeLineBar::moveIndicatorToLeft() {
-    if(mCurrentTime > mHistoryBeginTime) {
-        setCurrentTime(mCurrentTime - 1);
-        if(mGeologicalPeriods[mCurrentPeriodPos].after(mCurrentTime)) {
-            mCurrentPeriodPos--;
-            emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
-        }
-        checkForEvents();
-        emit timeChanged(mCurrentTime);
+    if(mMovingDirection != Left) {
+        startAnimationTo(mHistoryBeginTime);
+        mMovingDirection = Left;
     }
 }
 
 void TimeLineBar::moveIndicatorToRight() {
-    if(mCurrentTime < mHistoryLength) {
-        setCurrentTime(mCurrentTime + 1);
-        if(mGeologicalPeriods[mCurrentPeriodPos].before(mCurrentTime)) {
-            mCurrentPeriodPos++;
-            emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
-        }
-        checkForEvents();
-        emit timeChanged(mCurrentTime);
+    if(mMovingDirection != Right) {
+        startAnimationTo(mHistoryLength);
+        mMovingDirection = Right;
     }
 }
 
@@ -71,24 +80,38 @@ void TimeLineBar::setHistoryLength(const double timeDistance) {
     update();
 }
 
-void TimeLineBar::checkForEvents() {
-    int begin = 0, end = mHistoricalEvents.size() - 1, middle;
-    while(begin <= end) {
-        middle = (begin + end)/2;
-        if(mHistoricalEvents[middle].ocurrenceTime == mCurrentTime) {
-            emit eventReached(mHistoryEventsModel->index(middle));
-            return;
-        } else if(mCurrentTime < mHistoricalEvents[middle].ocurrenceTime) {
-            end = middle - 1;
-        } else {
-            begin = middle + 1;
-        }
+void TimeLineBar::checkForEvents(const double currentTime) {
+    if((currentTime > mCurrentTime) &&
+       (&mHistoricalEvents[mLastEventReached] != &mHistoricalEvents.last()) &&
+       ocurredInIntervalOfTolerance(mHistoricalEvents[mLastEventReached+1].ocurrenceTime,currentTime)) {
+        emit eventReached(mHistoryEventsModel->index(++mLastEventReached));
+    } else if((currentTime < mCurrentTime) &&
+              (&mHistoricalEvents[mLastEventReached] != &mHistoricalEvents.first()) &&
+              ocurredInIntervalOfTolerance(mHistoricalEvents[mLastEventReached-1].ocurrenceTime,currentTime)) {
+        emit eventReached(mHistoryEventsModel->index(--mLastEventReached));
+    }
+}
+
+bool TimeLineBar::ocurredInIntervalOfTolerance(const double ocurrenceTime, const double currentTime) {
+    const double onePercentOfHistory = mHistoryLength / 100;
+    return (currentTime >= (ocurrenceTime - onePercentOfHistory)) && (currentTime <= (ocurrenceTime + onePercentOfHistory));
+}
+
+void TimeLineBar::checkGeologicalPeriod(const double currentTime)
+{
+    if(currentTime > mCurrentTime && mGeologicalPeriods[mCurrentPeriodPos].before(mCurrentTime)) {
+        mCurrentPeriodPos++;
+        emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
+    } else if(currentTime < mCurrentTime && mGeologicalPeriods[mCurrentPeriodPos].after(mCurrentTime)) {
+        mCurrentPeriodPos--;
+        emit periodChanged(mGeologicalPeriodsModel->index(mCurrentPeriodPos));
     }
 }
 
 void TimeLineBar::setCurrentTime(const double currentTime) {
+    checkGeologicalPeriod(currentTime);
+    checkForEvents(currentTime);
     mCurrentTime = currentTime;
-    emit timeChanged(mCurrentTime);
     update();
 }
 

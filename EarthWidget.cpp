@@ -67,5 +67,5 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
 }
 
 void EarthWidget::setEarthPeriod(const QModelIndex &index) {
-    earth->setupMaterialTexture(index.data(GeologicalPeriodsModel::TextureRole).toString());
+    earth->setTexture(index.data(GeologicalPeriodsModel::TextureRole).toString());
 }

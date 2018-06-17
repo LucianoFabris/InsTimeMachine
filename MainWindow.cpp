@@ -32,10 +32,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_D:
-        ui->timeLineBar->moveIndicatorToRight();
+        if(!event->isAutoRepeat())
+            ui->timeLineBar->moveIndicatorToRight();
         break;
     case Qt::Key_A:
-        ui->timeLineBar->moveIndicatorToLeft();
+        if(!event->isAutoRepeat())
+            ui->timeLineBar->moveIndicatorToLeft();
         break;
     default:
         QMainWindow::keyPressEvent(event);
@@ -45,5 +47,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
 {
-    Q_UNUSED(event);
+    if(!event->isAutoRepeat() && (event->key() == Qt::Key_D || event->key() == Qt::Key_A)) {
+        ui->timeLineBar->stopIndicator();
+    }
 }
