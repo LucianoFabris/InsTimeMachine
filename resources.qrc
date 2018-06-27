@@ -7,5 +7,58 @@
         <file>volcanic-texture.png</file>
         <file>DeepTime.ico</file>
         <file>arquean-earth.jpg</file>
+        <file alias="audio1">Eventos/audio1.mp3</file>
+        <file alias="audio2">Eventos/audio2.mp3</file>
+        <file alias="audio3">Eventos/audio3.mp3</file>
+        <file alias="audio4">Eventos/audio4.mp3</file>
+        <file alias="audio5">Eventos/audio5.mp3</file>
+        <file alias="audio6">Eventos/audio6.mp3</file>
+        <file alias="audio7">Eventos/audio7.mp3</file>
+        <file alias="audio8">Eventos/audio8.mp3</file>
+        <file alias="audio9">Eventos/audio9.mp3</file>
+        <file alias="audio10">Eventos/audio10.mp3</file>
+        <file alias="audio11">Eventos/audio11.mp3</file>
+        <file alias="audio12">Eventos/audio12.mp3</file>
+        <file alias="audio13">Eventos/audio13.mp3</file>
+        <file alias="audio14">Eventos/audio14.mp3</file>
+        <file alias="audio15">Eventos/audio15.mp3</file>
+        <file alias="audio16">Eventos/audio16.mp3</file>
+        <file alias="audio17">Eventos/audio17.mp3</file>
+        <file alias="audio18">Eventos/audio18.mp3</file>
+        <file alias="audio19">Eventos/audio19.mp3</file>
+        <file alias="audio20">Eventos/audio20.mp3</file>
+        <file alias="audio21">Eventos/audio21.mp3</file>
+        <file alias="audio22">Eventos/audio22.mp3</file>
+        <file alias="audio23">Eventos/audio23.mp3</file>
+        <file alias="image17.png">Eventos/image17.png</file>
+        <file alias="image18.png">Eventos/image18.png</file>
+        <file alias="image19.png">Eventos/image19.png</file>
+        <file alias="image20.png">Eventos/image20.png</file>
+        <file alias="image21.png">Eventos/image21.png</file>
+        <file alias="image22.png">Eventos/image22.png</file>
+        <file alias="image23.png">Eventos/image23.png</file>
+        <file alias="text1">Eventos/text1.html</file>
+        <file alias="text2">Eventos/text2.html</file>
+        <file alias="text3">Eventos/text3.html</file>
+        <file alias="text4">Eventos/text4.html</file>
+        <file alias="text5">Eventos/text5.html</file>
+        <file alias="text6">Eventos/text6.html</file>
+        <file alias="text7">Eventos/text7.html</file>
+        <file alias="text8">Eventos/text8.html</file>
+        <file alias="text9">Eventos/text9.html</file>
+        <file alias="text10">Eventos/text10.html</file>
+        <file alias="text11">Eventos/text11.html</file>
+        <file alias="text12">Eventos/text12.html</file>
+        <file alias="text13">Eventos/text13.html</file>
+        <file alias="text14">Eventos/text14.html</file>
+        <file alias="text15">Eventos/text15.html</file>
+        <file alias="text16">Eventos/text16.html</file>
+        <file alias="text17">Eventos/text17.html</file>
+        <file alias="text18">Eventos/text18.html</file>
+        <file alias="text19">Eventos/text19.html</file>
+        <file alias="text20">Eventos/text20.html</file>
+        <file alias="text21">Eventos/text21.html</file>
+        <file alias="text22">Eventos/text22.html</file>
+        <file alias="text23">Eventos/text23.html</file>
     </qresource>
 </RCC>

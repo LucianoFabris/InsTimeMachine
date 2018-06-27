@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui 3dcore 3drender 3dextras
+QT += core gui 3dcore 3drender 3dextras mqtt network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -34,7 +34,9 @@ SOURCES += \
     GeologicalPeriodsModel.cpp \
     HistoryEventsModel.cpp \
     HistoricalEvent.cpp \
-    EventDescriptionView.cpp
+    EventDescriptionView.cpp \
+    ShiftrClient.cpp \
+    ImageTextBrowser.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -45,7 +47,9 @@ HEADERS += \
     GeologicalPeriodsModel.h \
     HistoryEventsModel.h \
     HistoricalEvent.h \
-    EventDescriptionView.h
+    EventDescriptionView.h \
+    ShiftrClient.h \
+    ImageTextBrowser.h
 
 FORMS += \
         MainWindow.ui

@@ -4,6 +4,11 @@
 #include <QMainWindow>
 #include "GeologicalPeriodsModel.h"
 #include "HistoryEventsModel.h"
+#include "EventDescriptionView.h"
+#include <QThread>
+#include <QSharedPointer>
+
+#include "ShiftrClient.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +26,10 @@ private:
     Ui::MainWindow *ui;
     GeologicalPeriodsModel mGeologicalPeriodsModel;
     HistoricalEventsModel mHistoryEventsModel;
+    EventDescriptionView mDescriptionDialog;
+    bool isDescriptionVisible;
+    QThread mWebThread;
+    ShiftrClient *mClient;
 
     // QWidget interface
 protected:

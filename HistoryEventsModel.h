@@ -25,6 +25,8 @@ public:
 
 private:
     QList<HistoricalEvent> mHistoryEvents;
+
+    double dateForEvent(const int i);
 };
 
 #endif // HISTORYEVENTSMODEL_H

@@ -4,8 +4,11 @@
 #include <QRect>
 #include <QFont>
 #include <QDebug>
+#include <MQTTAsync.h>
+#include <MQTTClient.h>
+#include <MQTTClientPersistence.h>
 
-const int TIME_TO_PERCURR_BAR = 6000;
+const int TIME_TO_PERCURR_BAR = 12000;
 
 TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
@@ -17,10 +20,18 @@ TimeLineBar::TimeLineBar(QWidget *parent) :
     mLastEventReached(0)
 {
     mIndicatorAnimation.setDuration(10000);
-    mIndicatorAnimation.setEasingCurve(QEasingCurve::InOutQuad);
+    mIndicatorAnimation.setEasingCurve(QEasingCurve::Linear);
     connect(&mIndicatorAnimation, &QPropertyAnimation::finished, [this]  {
        mMovingDirection = Stoped;
     });
+}
+
+int TimeLineBar::barWidth() const {
+    return width() - 2*mMargin;
+}
+
+int TimeLineBar::barHeight() const {
+    return height() - 2*mMargin;
 }
 
 void TimeLineBar::setGeologicalPeriodsModel(GeologicalPeriodsModel &model) {
@@ -51,6 +62,7 @@ void TimeLineBar::stopIndicator() {
 
 void TimeLineBar::startAnimationTo(const double endValue)
 {
+    mIndicatorAnimation.stop();
     updateIndicatorAnimation(endValue);
     mIndicatorAnimation.start();
 }
@@ -115,6 +127,16 @@ void TimeLineBar::setCurrentTime(const double currentTime) {
     update();
 }
 
+void TimeLineBar::handleVelocity(const int velocity) {
+    if(velocity >= -200 && velocity <= 200) {
+        stopIndicator();
+    } else if (velocity < -100) {
+        moveIndicatorToRight();
+    } else {
+        moveIndicatorToLeft();
+    }
+}
+
 void TimeLineBar::paintEvent(QPaintEvent *event)
 {
     QFrame::paintEvent(event);
@@ -156,19 +178,10 @@ void TimeLineBar::drawPeriodRectangle(const QRect &periodRect, const QColor &col
 void TimeLineBar::drawPeriodName(QPainter &p, const QRect &periodRect, const QString &periodName) const {
     QFont font;
     font.setBold(true);
-    font.setPointSize(16);
+    font.setPointSize(12);
     p.setFont(font);
     p.setPen(QColor(Qt::white));
     p.drawText(periodRect, periodName, QTextOption(Qt::AlignCenter));
-}
-
-
-int TimeLineBar::barWidth() const {
-    return width() - 2*mMargin;
-}
-
-int TimeLineBar::barHeight() const {
-    return height() - 2*mMargin;
 }
 
 void TimeLineBar::drawTimePositionIndicator(QPainter &p) const {
@@ -176,5 +189,21 @@ void TimeLineBar::drawTimePositionIndicator(QPainter &p) const {
     p.setBrush(QBrush(QColor(Qt::white)));
     const int indicatorWidth = 16;
     const int indicatorHeight = barHeight() + 16;
-    p.drawRect(xPostPercentage * barWidth() -indicatorWidth/2, -8, indicatorWidth, indicatorHeight);
+    const double indicatorX = xPostPercentage * barWidth() -indicatorWidth/2;
+    const double indicatorY = -8;
+    p.drawRect(indicatorX, indicatorY, indicatorWidth, indicatorHeight);
+    drawIndicatorTime(p, indicatorX, indicatorY, indicatorWidth, indicatorHeight);
+}
+
+void TimeLineBar::drawIndicatorTime(QPainter &p, const double indicatorX, const double indicatorY, const int indicatorWidth, const int indicatorHeight) const {
+    p.rotate(90);
+    p.translate(0, -indicatorWidth);
+    p.setPen(QColor(Qt::black));
+
+    QFont f;
+    f.setBold(true);
+    f.setPointSize(11);
+    p.setFont(f);
+
+    p.drawText(QRect(indicatorY, -indicatorX, indicatorHeight, indicatorWidth), QString::number(mCurrentTime) + " m.a.", QTextOption(Qt::AlignCenter));
 }

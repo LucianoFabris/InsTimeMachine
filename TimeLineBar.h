@@ -35,6 +35,7 @@ public slots:
     void moveIndicatorToRight();
     void moveIndicatorToLeft();
     void stopIndicator();
+    void handleVelocity(const int velocity);
 
 signals:
     void periodChanged(const QModelIndex &index);
@@ -50,6 +51,7 @@ private:
     void drawPeriodName(QPainter &p, const QRect &periodRect, const QString &periodName) const;
     void drawPeriod(const GeologicalPeriod &period, QPainter &p) const;
     void drawPeriodRectangle(const QRect &periodRect, const QColor &color, QPainter &p) const;
+    void drawIndicatorTime(QPainter &p, const double indicatorX, const double indicatorY, const int indicatorWidth, const int indicatorHeight) const;
 
     int barWidth() const;
     int barHeight() const;

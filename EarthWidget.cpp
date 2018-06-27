@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <QPropertyAnimation>
 
+#include "EventDescriptionView.h"
+
 using namespace Qt3DCore;
 using namespace Qt3DRender;
 using namespace Qt3DExtras;
@@ -18,8 +20,10 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
     Qt3DWindow *window = new Qt3DWindow();
     QWidget *windowWidget = QWidget::createWindowContainer(window);
     QVBoxLayout *layout = new QVBoxLayout;
+    layout->setMargin(0);
     layout->addWidget(windowWidget);
     setLayout(layout);
+    setFocusPolicy(Qt::NoFocus);
 
     auto scene = new QEntity;
     window->setRootEntity(scene);
