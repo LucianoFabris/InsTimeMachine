@@ -1,8 +1,9 @@
 #include "HistoricalEvent.h"
 
-HistoricalEvent::HistoricalEvent(const QString &text, const double ocurrenceTime) :
+HistoricalEvent::HistoricalEvent(const QString &text, const double ocurrenceTime, const QString &audioFile) :
     text(text),
-    ocurrenceTime(ocurrenceTime)
+    ocurrenceTime(ocurrenceTime),
+    audioFile(audioFile)
 {
 
 }

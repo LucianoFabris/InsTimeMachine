@@ -18,6 +18,7 @@ public slots:
     void startConsuming();
     void ping();
     void subscribe();
+    void sendVibration();
 
 signals:
     void velocityReceived(const int velocity);

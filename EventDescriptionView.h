@@ -5,6 +5,7 @@
 #include <QDialog>
 #include "HistoryEventsModel.h"
 #include <QPropertyAnimation>
+#include <QMediaPlayer>
 
 class EventDescriptionView : public QDialog
 {
@@ -22,6 +23,7 @@ private:
     QPropertyAnimation mSlidingAnimation;
     QPropertyAnimation mFadingAnimation;
     QPoint mSlidePoint;
+    QMediaPlayer mPlayer;
 };
 
 #endif // EVENTDESCRIPTIONVIEW_H

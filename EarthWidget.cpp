@@ -33,8 +33,13 @@ EarthWidget::EarthWidget(QWidget *parent) : QWidget(parent)
 //    auto cameraController = new QOrbitCameraController(scene);
 
     camera->setPosition(QVector3D(0, 0,500));
-    camera->setViewCenter(QVector3D(0.0f,0.0f,0.0f));
+    camera->setViewCenter(QVector3D(-85.0f,0.0f,0.0f));
     camera->setFarPlane(100000);
+
+//    QMatrix4x4 translationMatrix;
+//    translationMatrix.setToIdentity();
+//    translationMatrix.translate(200,0,0)|
+//    camera->transform()->setMatrix(translationMatrix);
 
     cameraLight->setIntensity(3);
     cameraLight->setColor(QColor(Qt::white));

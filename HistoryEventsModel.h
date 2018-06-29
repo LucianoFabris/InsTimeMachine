@@ -12,7 +12,8 @@ public:
 
     enum Role {
         TextRole,
-        TimeRole
+        TimeRole,
+        AudioRole
     };
 
     QList<HistoricalEvent> getAllEvents() const { return mHistoryEvents; }
@@ -21,7 +22,6 @@ public:
 public:
     int rowCount(const QModelIndex &parent) const override;
     QVariant data(const QModelIndex &index, int role) const override;
-
 
 private:
     QList<HistoricalEvent> mHistoryEvents;

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT += core gui 3dcore 3drender 3dextras mqtt network
+QT += core gui 3dcore 3drender 3dextras mqtt network multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

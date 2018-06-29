@@ -18,9 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     connect(mClient, &ShiftrClient::velocityReceived, ui->timeLineBar, &TimeLineBar::handleVelocity);
-
     connect(ui->timeLineBar, &TimeLineBar::eventReached, &mDescriptionDialog, &EventDescriptionView::setCurrentEvent);
     connect(ui->timeLineBar, &TimeLineBar::periodChanged, ui->earthWidget, &EarthWidget::setEarthPeriod);
+    connect(ui->timeLineBar, &TimeLineBar::eventReached, mClient, &ShiftrClient::sendVibration);
 
     ui->timeLineBar->setGeologicalPeriodsModel(mGeologicalPeriodsModel);
     ui->timeLineBar->setHistoricalEventsModel(mHistoryEventsModel);
@@ -49,7 +49,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             break;
         case Qt::Key_S:
             mClient->subscribe();
-            qDebug() << "subscribed" << endl;
             break;
         case Qt::Key_Escape:
             showMinimized();

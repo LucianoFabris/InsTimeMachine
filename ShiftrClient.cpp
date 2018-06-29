@@ -33,6 +33,12 @@ void ShiftrClient::subscribe() {
     connect(mSub, &QMqttSubscription::messageReceived, this, &ShiftrClient::handleMessage);
 }
 
+void ShiftrClient::sendVibration() {
+    QByteArray array;
+    array.setNum(1);
+    mClient.publish(QMqttTopicName("/vibration"), array, QOS);
+}
+
 void ShiftrClient::handleMessage(QMqttMessage msg) {
     qDebug() << msg.payload().toInt() << endl;
     emit velocityReceived(msg.payload().toInt());

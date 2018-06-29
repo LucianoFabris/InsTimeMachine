@@ -8,7 +8,7 @@
 #include <MQTTClient.h>
 #include <MQTTClientPersistence.h>
 
-const int TIME_TO_PERCURR_BAR = 12000;
+const int TIME_TO_PERCURR_BAR = 80000;
 
 TimeLineBar::TimeLineBar(QWidget *parent) :
     QFrame(parent),
@@ -97,15 +97,20 @@ void TimeLineBar::checkForEvents(const double currentTime) {
        (&mHistoricalEvents[mLastEventReached] != &mHistoricalEvents.last()) &&
        ocurredInIntervalOfTolerance(mHistoricalEvents[mLastEventReached+1].ocurrenceTime,currentTime)) {
         emit eventReached(mHistoryEventsModel->index(++mLastEventReached));
-    } else if((currentTime < mCurrentTime) &&
+    }/* else if((currentTime < mCurrentTime) &&
               (&mHistoricalEvents[mLastEventReached] != &mHistoricalEvents.first()) &&
               ocurredInIntervalOfTolerance(mHistoricalEvents[mLastEventReached-1].ocurrenceTime,currentTime)) {
         emit eventReached(mHistoryEventsModel->index(--mLastEventReached));
+    }*/
+    if((currentTime < mCurrentTime) &&
+                  (&mHistoricalEvents[mLastEventReached] != &mHistoricalEvents.first()) &&
+                  ocurredInIntervalOfTolerance(mHistoricalEvents[mLastEventReached-1].ocurrenceTime,currentTime)) {
+            emit eventReached(mHistoryEventsModel->index(--mLastEventReached));
     }
 }
 
 bool TimeLineBar::ocurredInIntervalOfTolerance(const double ocurrenceTime, const double currentTime) {
-    const double onePercentOfHistory = mHistoryLength / 100;
+    const double onePercentOfHistory = mHistoryLength / 300;
     return (currentTime >= (ocurrenceTime - onePercentOfHistory)) && (currentTime <= (ocurrenceTime + onePercentOfHistory));
 }
 
@@ -192,7 +197,7 @@ void TimeLineBar::drawTimePositionIndicator(QPainter &p) const {
     const double indicatorX = xPostPercentage * barWidth() -indicatorWidth/2;
     const double indicatorY = -8;
     p.drawRect(indicatorX, indicatorY, indicatorWidth, indicatorHeight);
-    drawIndicatorTime(p, indicatorX, indicatorY, indicatorWidth, indicatorHeight);
+    //drawIndicatorTime(p, indicatorX, indicatorY, indicatorWidth, indicatorHeight);
 }
 
 void TimeLineBar::drawIndicatorTime(QPainter &p, const double indicatorX, const double indicatorY, const int indicatorWidth, const int indicatorHeight) const {

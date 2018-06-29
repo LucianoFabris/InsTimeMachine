@@ -5,7 +5,7 @@ GeologicalPeriodsModel::GeologicalPeriodsModel()
     mPeriods.append(GeologicalPeriod("Hadeano", Qt::red, 0, 700, QStringLiteral("qrc:/volcanic-texture.png")));
     mPeriods.append(GeologicalPeriod("Arqueano", QColor(254,184,114), 700, 2250, QStringLiteral("qrc:/arquean-earth.jpg")));
     mPeriods.append(GeologicalPeriod("Proterozóico", QColor(111,218,237), 2250, 4250, QStringLiteral("qrc:/Icy-texture.png")));
-    mPeriods.append(GeologicalPeriod("Fanerozoico", Qt::blue, 4250, 4700, QStringLiteral("qrc:/earth-texture.jpg")));
+    mPeriods.append(GeologicalPeriod("Fanerozoico", Qt::blue, 4250, 5150, QStringLiteral("qrc:/earth-texture.jpg")));
 //    mPeriods.append(GeologicalPeriod("Neoachean", QColor(254,166,186), 1900, 2100, QStringLiteral("qrc:/arquean-earth.jpg")));
 //    mPeriods.append(GeologicalPeriod("Paleoproterozoic", QColor(254,91,113), 2100, 3000, QStringLiteral("qrc:/arquean-earth.jpg")));
 //    mPeriods.append(GeologicalPeriod("Mesoproterozoic", QColor(254,184,114), 3000, 3600, QStringLiteral("qrc:/earth-texture.jpg")));

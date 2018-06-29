@@ -10,7 +10,7 @@ EventDescriptionView::EventDescriptionView(QPoint slidePoint, QWidget *parent) :
     mSlidingAnimation(this, "geometry"),
     mSlidePoint(slidePoint)
 {
-    setGeometry(mSlidePoint.x(), mSlidePoint.y(), 450, 600);
+    setGeometry(mSlidePoint.x(), mSlidePoint.y(), 500, 640);
     setFocusPolicy(Qt::NoFocus);
     setWindowFlag(Qt::FramelessWindowHint);
 
@@ -38,4 +38,7 @@ void EventDescriptionView::slideOut() {
 
 void EventDescriptionView::setCurrentEvent(const QModelIndex &index) {
     mTextBrowser->setHtml(index.data(HistoricalEventsModel::TextRole).toString());
+    mPlayer.stop();
+    mPlayer.setMedia(QUrl("qrc:/" + index.data(HistoricalEventsModel::AudioRole).toString()));
+    mPlayer.play();
 }
