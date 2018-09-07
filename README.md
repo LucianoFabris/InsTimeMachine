@@ -1,14 +1,12 @@
 # InsTimeMachine
 ## Interactive Art project
 
-### Limbo - limbo - L i m b o - LIMBO - LLIIMMBBOO - lliimmbboo - l1mb0
-
-## Creators
-##          Daniela Palumbo
-##        Diogo Teles Sant’Anna
-##    Gabriel Pellegrino da Silva
-##  Luciano Leite Fabris
-## Maria Angélica Paulino Alves
+#### Creators
+#####          Daniela Palumbo
+#####        Diogo Teles Sant’Anna
+#####    Gabriel Pellegrino da Silva
+#####  Luciano Leite Fabris
+##### Maria Angélica Paulino Alves
 
 ### Documentação do Projeto Final - Manivela
 
