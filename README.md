@@ -2,11 +2,13 @@
 ## Interactive Art project
 
 ### Limbo - limbo - L i m b o - LIMBO - LLIIMMBBOO - lliimmbboo - l1mb0
+
+## Creators
 ##          Daniela Palumbo
 ##        Diogo Teles Sant’Anna
 ##    Gabriel Pellegrino da Silva
 ##  Luciano Leite Fabris
-##Maria Angélica Paulino Alves
+## Maria Angélica Paulino Alves
 
 ### Documentação do Projeto Final - Manivela
 
@@ -14,7 +16,8 @@
 
 A figura 1 a seguir contém o esquemático do hardware do projeto em uma protoboard, utilizado para testes iniciais e desenvolvimento do software presente no arduíno.
 
-##### Figura 1: Esquemático do hardware do projeto
+###### Figura 1: Esquemático do hardware do projeto
+![Alt text](https://user-images.githubusercontent.com/16705053/45236779-3c93a800-b2b3-11e8-9bf3-f6666d9fb36b.png "hardware")
     
 O esquemático apresentado contém 1 ESP8266 NodeMCU 1.0 Microcontroller, 1 Acelerômetro & Giroscópio (MPU-6050) e 1 motor vibrador flat para arduíno. O último foi representado como um servo motor pelo fato de não possuir templates no programa Fritzing (utilizado para criação da imagem), porém as suas ligações com o restante do circuito são equivalentes. Além dos componentes apresentados anteriormente, utilizou-se um power bank para alimentação do arduino. Por motivos de espaço, na versão final do projeto o circuito foi passado para duas placas universais perfuradas, uma contendo o arduino e outra com os demais periféricos.
 
@@ -32,15 +35,18 @@ Para construção da interface gráfica foi utilizado o framework Qt e a linguag
 
 Os eventos históricos foram selecionados e salvos em arquivos de texto formatados utilizando a linguagem de marcação HTML para uma melhor organização e padronização do conteúdo. Além disso, todos os textos foram convertidos para arquivos de áudio de forma a melhorar a experiência de usuários de capacidades visuais reduzidas. Com estes dois meios como principais conteúdos, e utilizando o framework, foi feita a estruturação da interface gráfica e comunicação com a plataforma online como entrada da interação do usuário. 
 
-##### Figura 2: Interface gráfica construída utilizando o framework Qt
+###### Figura 2: Interface gráfica construída utilizando o framework Qt
+![Alt text](https://user-images.githubusercontent.com/16705053/45236784-3c93a800-b2b3-11e8-9fec-9a4e5ecdba87.png "UI")
 
 Para comunicação entre a placa e a interface gráfica, utilizou-se a plataforma Shiftr.io. Com esta plataforma foi possível utilizar a funcionalidade de wi-fi do microcontroller para enviar dados para a nuvem, os quais eram redirecionados pela plataforma Shiftr para a interface gráfica que recebia e respondia aos dados dos sensores. Além disso, a interface gráfica também se comunicava com o dispositivo de vibração informando quando o usuário havia encontrado um evento histórico. O esquema abaixo ilustra a comunicação.
 
-##### Figura 3: Ilustração do processo de comunicação do artefato
+###### Figura 3: Ilustração do processo de comunicação do artefato
+![Alt text](https://user-images.githubusercontent.com/16705053/45236885-8b414200-b2b3-11e8-8684-7ea158ea5f2e.png "software communication")
 
 #### Modelo de Interação (artefato para o usuário):
 
-##### Figura 4: Representação 3D do projeto em uma espaço interativo
+###### Figura 4: Representação 3D do projeto em uma espaço interativo
+![Alt text](https://user-images.githubusercontent.com/16705053/45236780-3c93a800-b2b3-11e8-95e8-f27d56b1ed52.png "artefact")
 
 O usuário inicia a interação frente a uma manivela e uma tela (figura 2) na qual ele pode observar o planeta terra girando, uma extensa linha do tempo e um breve texto descrevendo os dias atuais da humanidade, que logo começa a ser lido por uma voz automática.
     
@@ -62,13 +68,15 @@ O design do projeto final começou a ser trabalhado em sala de aula com as ativi
 
 A ideia inicial do projeto seria associar o movimento de uma manivela à reprodução de um vídeo. No entanto, não encontramos uma manivela boa o suficiente para representar a nossa ideia, e optamos por usar o pedal de uma bicicleta para suprir essa necessidade. A estrutura inicial seria assim:
 
-##### Figura 5: estrutura inicial da manivela
+###### Figura 5: estrutura inicial da manivela
+![Alt text](https://user-images.githubusercontent.com/16705053/45236781-3c93a800-b2b3-11e8-9ba0-63e91b11d864.jpg "manivela")
 
 Após conseguirmos a estrutura, outro desafio de design foi prendê-la de modo que ela pudesse girar e fosse confortável para o usuário. Para isso, decidimos mantê-la na horizontal, pois não forçaria tanto o ombro da pessoa que estivesse utilizando e também não causaria tantas variações no sensor de acelerômetro se a pessoa soltasse o pedal. Para melhorar a comunicação de um usuário com o artefato, colocamos palitos de churrasco no encaixe da manivela na bicicleta e enrolamos esses palitos com corda de varal para melhorar a sensação tátil.
 
 Para possibilitar que todo o equipamento gire, todos os componentes envolvidos com o tratamento do sinal devem estar com a mesma velocidade angular, pois se não os fios irão enrolar e o artefato seria destruído com o uso. Foi preso com fita crepe um powerbank como fonte de bateria, o microcontrolador, os sensores e atuadores na manivela.
 
-##### Figura 6: Manivela com os componentes anexados
+###### Figura 6: Manivela com os componentes anexados
+![Alt text](https://user-images.githubusercontent.com/16705053/45236782-3c93a800-b2b3-11e8-83d8-491da0bc4d50.jpg "manivela final")
 
 Após isso, precisamos arrumar alguma estrutura que pudesse manter o pedal na posição desejada. Entre as opções consideradas tivemos a cimentação da base do pedal, utilização de um grampo (sargento) ou usar cordas para amarrá-lo. Apenas a última deu certo e foi a solução adotada pelo grupo para a entrega final. Devido a essa demora, tivemos que desconsiderar também uma representação mais visual do que poderia significar a manivela, que a princípio seria representada como um ponteiro de um relógio, que seria desenhado na base.
 
